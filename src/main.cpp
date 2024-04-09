@@ -160,14 +160,6 @@ public:
 
     glBindVertexArray(m_VAO1);
     glDrawElements(GL_TRIANGLES, m_rects_indices.size(), GL_UNSIGNED_INT, 0);
-
-    // for (int32_t i{}; i < m_rects_indices.size(); ++i) {
-    // std::cout << m_rects_indices.at(i) << ", ";
-    // if ((i + 1) % 6 == 0)
-    // std::cout << std::endl;
-    // }
-    //
-    // std::cout << std::endl;
   }
 
   int32_t handle(int32_t event) {
@@ -350,22 +342,6 @@ public:
           PUSH(bottom_left);
           PUSH(top_left);
 
-          // std::cout << i * canvas::width + j << std::endl;
-          //
-          // std::cout << std::format("Top left: {}, {}", top_left.x,
-          // top_left.y)
-          // << std::endl;
-          // std::cout << std::format("Top right: {}, {}", top_right.x,
-          // top_right.y)
-          // << std::endl;
-          // std::cout << std::format("Bottom left: {}, {}", bottom_left.x,
-          // bottom_left.y)
-          // << std::endl;
-          // std::cout << std::format("Bottom right: {}, {}", bottom_right.x,
-          // bottom_right.y)
-          // << std::endl;
-          //
-          m_rects_indices.push_back(offset);
           m_rects_indices.push_back(offset + 1);
           m_rects_indices.push_back(offset + 3);
           m_rects_indices.push_back(offset + 1);
@@ -434,7 +410,6 @@ void export_callback(Fl_Widget *w, void *data) {
 
       if (count == 8) {
         byte = reversed(byte);
-        // std::cout << "0x" << std::hex << static_cast<uint32_t>(byte) << ", ";
         buffer_data << "0x" << std::hex << static_cast<uint32_t>(byte) << ", ";
         count = 0;
         byte = 0;
@@ -455,7 +430,6 @@ void export_callback(Fl_Widget *w, void *data) {
 
 void canvas_resize_width(Fl_Widget *w, void *data) {
   Fl_Value_Slider *slider = static_cast<Fl_Value_Slider *>(w);
-  std::cout << slider->value() << std::endl;
   GlWindow *window = static_cast<GlWindow *>(data);
   window->resize(slider->value(), 0.0f);
 }
@@ -481,7 +455,7 @@ int main(int argc, char **argv) {
   clear_button->callback(clear_callback, gl_window);
 
   Fl_Text_Display *output_text = new Fl_Text_Display{
-      fl_viewport_start_x + 100, fl_viewport_start_y + 300, 300, 300};
+      fl_viewport_start_x + 50, fl_viewport_start_y + 300, 400, 400};
 
   Fl_Button *export_button = new Fl_Button{
       fl_viewport_start_x + 300, fl_viewport_start_y + 10, 150, 50, "Export"};
