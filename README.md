@@ -3,9 +3,12 @@
 Generate bitmap for hobbyist oled displays from grid canvas.
 
 ### Dependencies
-- Fltk
-- Opengl
+- FLTK
+- OpenGL
 - C++20
+
+### Screenshots
+![](/home/arvk/Sandbox/Screenshots/screenshot1.png)
 
 ### Build
 ```
