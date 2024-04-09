@@ -14,11 +14,6 @@
 #include <string>
 #include <vector>
 
-#define ASSERT(X)                                                              \
-  if (!(X))                                                                    \
-    std::cerr << "Assertion Error: " << #X << " in file " << __FILE__          \
-              << " at line: " << __LINE__ << std::endl;
-
 constexpr int32_t window_width_v{1280};
 constexpr int32_t window_height_v{720};
 
