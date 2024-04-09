@@ -1,3 +1,0 @@
-/var/home/arvk/Sandbox/build/CMakeFiles/oled-bitmap-generator.dir
-/var/home/arvk/Sandbox/build/CMakeFiles/edit_cache.dir
-/var/home/arvk/Sandbox/build/CMakeFiles/rebuild_cache.dir
