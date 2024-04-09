@@ -337,6 +337,7 @@ public:
           PUSH(bottom_left);
           PUSH(top_left);
 
+          m_rects_indices.push_back(offset);
           m_rects_indices.push_back(offset + 1);
           m_rects_indices.push_back(offset + 3);
           m_rects_indices.push_back(offset + 1);
