@@ -15,4 +15,4 @@ Generate bitmap for hobbyist oled displays from grid canvas.
 cmake -S . -B build
 cmake --build build
 ```
-**Note: Currently only builds in Linux.**
+**Note: Currently only works on Linux.**
