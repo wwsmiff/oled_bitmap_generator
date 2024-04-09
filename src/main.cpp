@@ -2,6 +2,7 @@
 #include <FL/Fl_Box.H>
 #include <FL/Fl_Button.H>
 #include <FL/Fl_Gl_Window.H>
+#include <FL/Fl_Text_Editor.H>
 #include <FL/Fl_Value_Slider.H>
 #include <FL/Fl_Window.H>
 #include <GL/glew.h>
@@ -9,6 +10,7 @@
 #include <cstdint>
 #include <format>
 #include <iostream>
+#include <sstream>
 #include <string>
 #include <vector>
 
@@ -406,9 +408,12 @@ void clear_callback(Fl_Widget *w, void *data) {
   window->redraw();
 }
 
-void export_callback(Fl_Widget *w) {
+void export_callback(Fl_Widget *w, void *data) {
   uint8_t byte{};
   size_t count{};
+  std::stringstream buffer_data{};
+
+  Fl_Text_Display *text_display = static_cast<Fl_Text_Display *>(data);
 
   auto reversed = [=](uint8_t n) -> uint8_t {
     uint8_t r{};
@@ -429,13 +434,23 @@ void export_callback(Fl_Widget *w) {
 
       if (count == 8) {
         byte = reversed(byte);
-        std::cout << "0x" << std::hex << static_cast<uint32_t>(byte) << ", ";
+        // std::cout << "0x" << std::hex << static_cast<uint32_t>(byte) << ", ";
+        buffer_data << "0x" << std::hex << static_cast<uint32_t>(byte) << ", ";
         count = 0;
         byte = 0;
       }
     }
-    std::cout << std::endl;
+    buffer_data << "\n";
   }
+
+  Fl_Text_Buffer *text_buffer = new Fl_Text_Buffer{};
+
+  text_display->insert_position(0);
+  text_buffer->replace(0, buffer_data.str().size() + 1,
+                       buffer_data.str().c_str());
+  text_display->buffer(text_buffer);
+
+  Fl::copy(buffer_data.str().c_str(), buffer_data.str().size() + 1);
 }
 
 void canvas_resize_width(Fl_Widget *w, void *data) {
@@ -462,15 +477,18 @@ int main(int argc, char **argv) {
   gl_window->end();
 
   Fl_Button *clear_button = new Fl_Button{
-      fl_viewport_start_x + 100, fl_viewport_start_y + 100, 150, 50, "Clear"};
+      fl_viewport_start_x + 50, fl_viewport_start_y + 10, 150, 50, "Clear"};
   clear_button->callback(clear_callback, gl_window);
 
+  Fl_Text_Display *output_text = new Fl_Text_Display{
+      fl_viewport_start_x + 100, fl_viewport_start_y + 300, 300, 300};
+
   Fl_Button *export_button = new Fl_Button{
-      fl_viewport_start_x + 300, fl_viewport_start_y + 100, 150, 50, "Export"};
-  export_button->callback(export_callback);
+      fl_viewport_start_x + 300, fl_viewport_start_y + 10, 150, 50, "Export"};
+  export_button->callback(export_callback, output_text);
 
   Fl_Value_Slider *canvas_width_slider =
-      new Fl_Value_Slider{fl_viewport_start_x + 100, fl_viewport_start_y + 200,
+      new Fl_Value_Slider{fl_viewport_start_x + 100, fl_viewport_start_y + 100,
                           300, 25, "Canvas Width"};
 
   canvas_width_slider->type(FL_HORIZONTAL);
@@ -481,7 +499,7 @@ int main(int argc, char **argv) {
   canvas_width_slider->callback(canvas_resize_width, gl_window);
 
   Fl_Value_Slider *canvas_height_slider =
-      new Fl_Value_Slider{fl_viewport_start_x + 100, fl_viewport_start_y + 300,
+      new Fl_Value_Slider{fl_viewport_start_x + 100, fl_viewport_start_y + 200,
                           300, 25, "Canvas Height"};
 
   canvas_height_slider->type(FL_HORIZONTAL);
